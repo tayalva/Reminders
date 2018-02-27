@@ -11,6 +11,11 @@ import MapKit
 import CoreData
 import CoreLocation
 
+protocol HandleMapSearch {
+    
+    func dropPinZoomIn(placemark: MKPlacemark)
+    
+}
 
 class ViewController: UIViewController {
 
@@ -23,6 +28,8 @@ class ViewController: UIViewController {
     var testArray = ["Get Milk", "Drop off package"]
     var annotationIsPlaced: Bool = false
     let locationManager = CLLocationManager()
+    var selectedPin: MKPlacemark? = nil
+
     
     var resultsSearchController: UISearchController? = nil
     
@@ -46,7 +53,7 @@ class ViewController: UIViewController {
         definesPresentationContext = true
         
         locationSearchTable.mapView = mapView
-        locationSearchTable.handleMapSearchDelegate? = self as! HandleMapSearch
+        locationSearchTable.handleMapSearchDelegate = self
         
     }
     
@@ -172,3 +179,22 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
 }
 
+extension ViewController: HandleMapSearch {
+    
+    func dropPinZoomIn(placemark: MKPlacemark) {
+        selectedPin = placemark
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality, let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.01, 0.01)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+        
+    }
+}

@@ -10,18 +10,13 @@ import Foundation
 import UIKit
 import MapKit
 
-protocol HandleMapSearch {
-    
-    func dropPinZoomIn(placemark: MKPlacemark)
-    
-}
+
 
 class LocationSearchTable: UITableViewController {
     
     var matchingItems: [MKMapItem] = []
     var mapView: MKMapView? = nil
-    var selectedPin: MKPlacemark? = nil
-    var handleMapSearchDelegate: HandleMapSearch? = nil 
+    var handleMapSearchDelegate: HandleMapSearch? = nil
     
     
     func parseAddress(selectedItem: MKPlacemark) -> String {
@@ -85,27 +80,9 @@ extension LocationSearchTable {
         handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
         dismiss(animated: true, completion: nil)
     }
-    
 }
 
-extension LocationSearchTable: HandleMapSearch {
-    
-    func dropPinZoomIn(placemark: MKPlacemark) {
-        selectedPin = placemark
-        mapView?.removeAnnotations((mapView?.annotations)!)
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = placemark.coordinate
-        annotation.title = placemark.name
-        if let city = placemark.locality, let state = placemark.administrativeArea {
-            annotation.subtitle = "/(city) /(state)"
-        }
-        
-        mapView?.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.05, 0.05)
-        let region = MKCoordinateRegionMake(placemark.coordinate, span)
-        mapView?.setRegion(region, animated: true)
-        
-    }
-}
+
+
 
 
