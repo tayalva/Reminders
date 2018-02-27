@@ -14,7 +14,8 @@
 		A63B2D54203B742E007AAD80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A63B2D53203B742E007AAD80 /* Assets.xcassets */; };
 		A63B2D57203B742E007AAD80 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A63B2D55203B742E007AAD80 /* LaunchScreen.storyboard */; };
 		A63B2D62203B742E007AAD80 /* RemindersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B2D61203B742E007AAD80 /* RemindersTests.swift */; };
-		A63B2D6D203B7459007AAD80 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B2D6C203B7459007AAD80 /* DetailViewController.swift */; };
+		A63B2D70203F7C5F007AAD80 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A63B2D6F203F7C5F007AAD80 /* MapKit.framework */; };
+		A63B2D9720420287007AAD80 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B2D9620420287007AAD80 /* LocationSearchTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,8 @@
 		A63B2D5D203B742E007AAD80 /* RemindersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RemindersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63B2D61203B742E007AAD80 /* RemindersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersTests.swift; sourceTree = "<group>"; };
 		A63B2D63203B742E007AAD80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A63B2D6C203B7459007AAD80 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A63B2D6F203F7C5F007AAD80 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A63B2D9620420287007AAD80 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A63B2D70203F7C5F007AAD80 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,7 @@
 				A63B2D48203B742E007AAD80 /* Reminders */,
 				A63B2D60203B742E007AAD80 /* RemindersTests */,
 				A63B2D47203B742E007AAD80 /* Products */,
+				A63B2D6E203F7C5F007AAD80 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,8 +87,8 @@
 			children = (
 				A63B2D49203B742E007AAD80 /* AppDelegate.swift */,
 				A63B2D4B203B742E007AAD80 /* ViewController.swift */,
+				A63B2D9620420287007AAD80 /* LocationSearchTable.swift */,
 				A63B2D4D203B742E007AAD80 /* Main.storyboard */,
-				A63B2D6C203B7459007AAD80 /* DetailViewController.swift */,
 				A63B2D53203B742E007AAD80 /* Assets.xcassets */,
 				A63B2D55203B742E007AAD80 /* LaunchScreen.storyboard */,
 				A63B2D58203B742E007AAD80 /* Info.plist */,
@@ -100,6 +104,14 @@
 				A63B2D63203B742E007AAD80 /* Info.plist */,
 			);
 			path = RemindersTests;
+			sourceTree = "<group>";
+		};
+		A63B2D6E203F7C5F007AAD80 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A63B2D6F203F7C5F007AAD80 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,6 +165,11 @@
 					A63B2D45203B742E007AAD80 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					A63B2D5C203B742E007AAD80 = {
 						CreatedOnToolsVersion = 9.2;
@@ -206,9 +223,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A63B2D4C203B742E007AAD80 /* ViewController.swift in Sources */,
+				A63B2D9720420287007AAD80 /* LocationSearchTable.swift in Sources */,
 				A63B2D52203B742E007AAD80 /* Reminders.xcdatamodeld in Sources */,
 				A63B2D4A203B742E007AAD80 /* AppDelegate.swift in Sources */,
-				A63B2D6D203B7459007AAD80 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
