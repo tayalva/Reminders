@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     let locationManager = CLLocationManager()
     var selectedPin: MKPlacemark? = nil
 
+
     
     var resultsSearchController: UISearchController? = nil
     
@@ -53,6 +54,7 @@ class ViewController: UIViewController {
         resultsSearchController?.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
         
+
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
         
@@ -120,15 +122,18 @@ class ViewController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         locationManager.startUpdatingLocation()
+      
+        
     }
     
     @objc func addAnnotationOnLongPress(gesture: UILongPressGestureRecognizer){
         
-        if gesture.state == .ended && annotationIsPlaced == false {
+        if gesture.state == .ended {
             
+            mapView.removeAnnotations(mapView.annotations)
+            mapView.removeOverlays(mapView.overlays)
             let point = gesture.location(in: self.mapView)
             let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
-            print(coordinate)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             annotation.title = "Title"
@@ -136,9 +141,10 @@ class ViewController: UIViewController {
             let center = coordinate
             let circle = MKCircle(center: center, radius: 150)
             
+        
             self.mapView.add(circle)
             self.mapView.addAnnotation(annotation)
-            annotationIsPlaced = true 
+          
         }
     }
     
@@ -178,8 +184,25 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         }
         
         return MKOverlayRenderer(overlay: overlay)
-        
     }
+    
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+
+        let annotationView = MKPinAnnotationView()
+        if annotation.title! != "My Location" {
+        annotationView.animatesDrop = true
+        annotationView.pinTintColor = UIColor.darkGray
+        return annotationView
+        }
+        
+        return nil
+    }
+    
+  
+    
+    
 }
 
 extension ViewController: HandleMapSearch {
@@ -187,6 +210,7 @@ extension ViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark) {
         selectedPin = placemark
         mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
