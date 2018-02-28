@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
     
     
+    
     var testArray = ["Get Milk", "Drop off package"]
     var annotationIsPlaced: Bool = false
     let locationManager = CLLocationManager()
@@ -46,7 +47,7 @@ class ViewController: UIViewController {
         resultsSearchController?.searchResultsUpdater = locationSearchTable
         let searchBar = resultsSearchController!.searchBar
         searchBar.sizeToFit()
-        searchBar.placeholder = "Search for places"
+        searchBar.placeholder = "Search here or place a pin!"
         navigationItem.titleView = resultsSearchController?.searchBar
         resultsSearchController?.hidesNavigationBarDuringPresentation = false
         resultsSearchController?.dimsBackgroundDuringPresentation = true
@@ -66,6 +67,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func addReminderButton(_ sender: Any) {
+        navigationController?.isNavigationBarHidden = false
     newReminderViewConstraint.constant = 0
         UIView.animate(withDuration: 0.2, animations: {
             self.newReminderView.alpha = 0.95
@@ -79,7 +81,8 @@ class ViewController: UIViewController {
     @IBAction func saveButton(_ sender: Any) {
         
         newReminderViewConstraint.constant = 400
-        
+        navigationController?.isNavigationBarHidden = true
+
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
             self.view.layoutIfNeeded()
@@ -190,7 +193,10 @@ extension ViewController: HandleMapSearch {
         if let city = placemark.locality, let state = placemark.administrativeArea {
             annotation.subtitle = "\(city) \(state)"
         }
+        let center = placemark.coordinate
+        let circle = MKCircle(center: center, radius: 150)
         
+        self.mapView.add(circle)
         mapView.addAnnotation(annotation)
         let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)

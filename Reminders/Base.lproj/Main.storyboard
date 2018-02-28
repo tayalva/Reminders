@@ -51,47 +51,22 @@
                                     <action selector="addReminderButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="F87-NE-G5S"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ubE-YW-Xmv" userLabel="NewReminderView">
-                                <rect key="frame" x="16" y="21" width="343" height="625"/>
+                            <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ubE-YW-Xmv" userLabel="NewReminderView">
+                                <rect key="frame" x="416" y="80.5" width="343" height="576"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pick up double stuf oreos" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jtD-aP-dZL">
-                                        <rect key="frame" x="8" y="85" width="327" height="30"/>
+                                        <rect key="frame" x="8" y="364" width="327" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Reminder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="amC-z4-8Cu">
-                                        <rect key="frame" x="75" y="0.0" width="192" height="37"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="31"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOg-ZV-BF2">
-                                        <rect key="frame" x="8" y="56" width="50" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CmA-wf-ur1">
-                                        <rect key="frame" x="8" y="228" width="327" height="270"/>
+                                        <rect key="frame" x="8" y="8" width="327" height="270"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </mapView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-fa-raq">
-                                        <rect key="frame" x="8" y="506" width="327" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <state key="normal" title="Save">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="saveButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="18G-iF-BdT"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4VU-ia-czt">
-                                        <rect key="frame" x="8" y="564" width="327" height="50"/>
+                                        <rect key="frame" x="8" y="484" width="327" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.97012504436037872" green="0.61159690852117332" blue="0.20995631855123342" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Cancel">
@@ -101,15 +76,26 @@
                                             <action selector="saveButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gV0-bu-pIp"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Search For Location:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y2-D3-xpM">
-                                        <rect key="frame" x="8" y="123" width="158" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reminder Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOg-ZV-BF2">
+                                        <rect key="frame" x="8" y="335" width="127" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-fa-raq">
+                                        <rect key="frame" x="8" y="426" width="327" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Save">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="saveButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="18G-iF-BdT"/>
+                                        </connections>
+                                    </button>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="AtR-6S-lUG">
-                                        <rect key="frame" x="8" y="192" width="327" height="29"/>
+                                        <rect key="frame" x="8" y="286" width="327" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Entering"/>
@@ -117,25 +103,18 @@
                                         </segments>
                                         <color key="tintColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </segmentedControl>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Grocery Store" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kdC-i8-RAn">
-                                        <rect key="frame" x="8" y="154" width="327" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="343" id="6pV-fS-USR"/>
-                                    <constraint firstAttribute="height" constant="625" id="wbb-oA-8hU"/>
+                                    <constraint firstAttribute="width" constant="343" id="Rbs-Mp-oeI"/>
+                                    <constraint firstAttribute="height" constant="576" id="ToP-qJ-A4B"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ubE-YW-Xmv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Zr7-jS-CUR"/>
-                            <constraint firstItem="ubE-YW-Xmv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uxo-kT-TNO"/>
+                            <constraint firstItem="ubE-YW-Xmv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="35" id="3z7-fG-PMd"/>
+                            <constraint firstItem="ubE-YW-Xmv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="400" id="Pk0-hB-3Ca"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -143,7 +122,7 @@
                     <connections>
                         <outlet property="mapView" destination="CmA-wf-ur1" id="77f-RS-ON3"/>
                         <outlet property="newReminderView" destination="ubE-YW-Xmv" id="k1T-e8-2RT"/>
-                        <outlet property="newReminderViewConstraint" destination="uxo-kT-TNO" id="OkL-bk-f3H"/>
+                        <outlet property="newReminderViewConstraint" destination="Pk0-hB-3Ca" id="SzF-bd-mrY"/>
                         <outlet property="tableView" destination="vla-jh-sBA" id="hvI-Rv-r5d"/>
                     </connections>
                 </viewController>
@@ -198,10 +177,9 @@
         <!--Navigation Controller-->
         <scene sceneID="FTE-hi-xLq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kpL-eb-djx" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="kpL-eb-djx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3wf-YW-D6x">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
