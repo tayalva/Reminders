@@ -18,6 +18,10 @@ protocol HandleMapSearch {
 }
 
 class ViewController: UIViewController {
+    
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var reminders: [Reminder] = []
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var newReminderView: UIView!
@@ -27,17 +31,16 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var saveButtonOutlet: UIButton!
     @IBOutlet weak var cancelButtonOutlet: UIButton!
-    
+    @IBOutlet weak var enterExit: UISegmentedControl!
     
     var testArray = ["Get Milk", "Drop off package"]
     var annotationIsPlaced: Bool = false
     let locationManager = CLLocationManager()
     var selectedPin: MKPlacemark? = nil
     var reminderName: String = ""
-
-
-    
     var resultsSearchController: UISearchController? = nil
+    var isEntering: Bool = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,10 +75,29 @@ class ViewController: UIViewController {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotationOnLongPress(gesture:)))
         gestureRecognizer.minimumPressDuration = 0.5
         self.mapView.addGestureRecognizer(gestureRecognizer)
+        fetchData()
         
+    }
+    
+// Fetches data to populate the table view
+    
+
+    func fetchData() {
+        
+        do {
+            reminders = try context.fetch(Reminder.fetchRequest())
+            print(reminders)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
+        } catch {
+            print("could not load data")
+        }
     }
 
     @IBAction func addReminderButton(_ sender: Any) {
+        clearContents()
         navigationController?.isNavigationBarHidden = false
     newReminderViewConstraint.constant = 0
         UIView.animate(withDuration: 0.2, animations: {
@@ -88,23 +110,86 @@ class ViewController: UIViewController {
     
     @IBAction func nameTextDidEndAction(_ sender: Any) {
         
+        reminderName = nameTextField.text!
         
     }
     
+    @IBAction func enterExitSegmentedControl(_ sender: Any) {
+    
+        if enterExit.selectedSegmentIndex == 0 {
+            
+            isEntering = true
+        } else {
+            isEntering = false
+        }
+        
+    }
     
     @IBAction func saveButton(_ sender: Any) {
         
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+       
+        
+        if nameTextField.text == "" || mapView.annotations.count != 2 {
+            
+            let alert = UIAlertController(title: "Uh Oh!", message: "Make sure you have placed a pin and set a name!", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+                
+            })
+            
+            self.present(alert, animated: true, completion: nil)
+        } else {
+        
+     
+        
+        let newReminder = Reminder(context: context)
+        newReminder.name = nameTextField?.text
+        newReminder.locationLat = mapView.annotations[1].coordinate.latitude
+        newReminder.locationLong = mapView.annotations[1].coordinate.longitude
+        newReminder.isArriving = isEntering
+        appDelegate.saveContext()
+        
+        // UI effects/transitions
+        
+        fetchData()
+        print(reminderName)
         newReminderViewConstraint.constant = 400
         navigationController?.isNavigationBarHidden = true
-    
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
             self.view.layoutIfNeeded()
-            
-            
             })
+            
+        }
     }
     
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        
+        newReminderViewConstraint.constant = 400
+        navigationController?.isNavigationBarHidden = true
+        UIView.animate(withDuration: 0.3, animations: {
+            self.newReminderView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        })
+        
+    }
+    
+    func clearContents() {
+        
+        enterExit.selectedSegmentIndex = 0
+        isEntering = true
+        
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
+        
+        nameTextField.text = nil
+        addLocation()
+        
+    }
     func checkAuthorizationStatus() {
         
         switch (CLLocationManager.authorizationStatus()) {
@@ -197,7 +282,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return testArray.count
+        return reminders.count
     }
     
     
@@ -205,11 +290,22 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = testArray[indexPath.row]
+        cell.textLabel?.text = reminders.reversed()[indexPath.row].name
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
+            
+            let item = self.reminders[indexPath.row]
+            self.context.delete(item)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            self.reminders.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
         
-        
+        return [delete]
     }
 }
 

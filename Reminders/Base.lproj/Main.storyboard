@@ -66,7 +66,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="saveButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gV0-bu-pIp"/>
+                                            <action selector="cancelButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uVL-Tc-ihc"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reminder Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mOg-ZV-BF2">
@@ -84,6 +84,9 @@
                                             <segment title="Exiting"/>
                                         </segments>
                                         <color key="tintColor" red="0.39611479640000002" green="0.77833431959999999" blue="0.73469656709999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="enterExitSegmentedControl:" destination="BYZ-38-t0r" eventType="valueChanged" id="n0n-x0-0Nr"/>
+                                        </connections>
                                     </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-fa-raq">
                                         <rect key="frame" x="8" y="460" width="327" height="50"/>
@@ -124,6 +127,7 @@
                     <navigationItem key="navigationItem" id="hfV-Gk-Jxm"/>
                     <connections>
                         <outlet property="cancelButtonOutlet" destination="4VU-ia-czt" id="J2z-wH-iQM"/>
+                        <outlet property="enterExit" destination="AtR-6S-lUG" id="xdQ-EQ-IM0"/>
                         <outlet property="mapView" destination="CmA-wf-ur1" id="77f-RS-ON3"/>
                         <outlet property="nameTextField" destination="jtD-aP-dZL" id="bw8-gg-wFv"/>
                         <outlet property="newReminderView" destination="ubE-YW-Xmv" id="k1T-e8-2RT"/>
