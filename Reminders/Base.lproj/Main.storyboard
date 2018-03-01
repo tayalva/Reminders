@@ -102,6 +102,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="nameTextDidEndAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="GPU-Zl-1RQ"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -120,9 +123,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="hfV-Gk-Jxm"/>
                     <connections>
+                        <outlet property="cancelButtonOutlet" destination="4VU-ia-czt" id="J2z-wH-iQM"/>
                         <outlet property="mapView" destination="CmA-wf-ur1" id="77f-RS-ON3"/>
+                        <outlet property="nameTextField" destination="jtD-aP-dZL" id="bw8-gg-wFv"/>
                         <outlet property="newReminderView" destination="ubE-YW-Xmv" id="k1T-e8-2RT"/>
                         <outlet property="newReminderViewConstraint" destination="Pk0-hB-3Ca" id="SzF-bd-mrY"/>
+                        <outlet property="saveButtonOutlet" destination="Qqy-fa-raq" id="h81-NI-K94"/>
                         <outlet property="tableView" destination="vla-jh-sBA" id="hvI-Rv-r5d"/>
                     </connections>
                 </viewController>

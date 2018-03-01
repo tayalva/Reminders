@@ -23,13 +23,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var newReminderView: UIView!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nameTextField: UITextField!
     
+    @IBOutlet weak var saveButtonOutlet: UIButton!
+    @IBOutlet weak var cancelButtonOutlet: UIButton!
     
     
     var testArray = ["Get Milk", "Drop off package"]
     var annotationIsPlaced: Bool = false
     let locationManager = CLLocationManager()
     var selectedPin: MKPlacemark? = nil
+    var reminderName: String = ""
 
 
     
@@ -37,7 +41,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
         addLocation()
@@ -57,7 +61,10 @@ class ViewController: UIViewController {
 
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
-        
+      
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,12 +86,17 @@ class ViewController: UIViewController {
         
     }
     
-   
+    @IBAction func nameTextDidEndAction(_ sender: Any) {
+        
+        
+    }
+    
+    
     @IBAction func saveButton(_ sender: Any) {
         
         newReminderViewConstraint.constant = 400
         navigationController?.isNavigationBarHidden = true
-
+    
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
             self.view.layoutIfNeeded()
@@ -136,8 +148,8 @@ class ViewController: UIViewController {
             let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = "Title"
-            annotation.subtitle = "subtitle"
+            annotation.title = "Remind Me"
+            
             let center = coordinate
             let circle = MKCircle(center: center, radius: 150)
             
@@ -147,7 +159,38 @@ class ViewController: UIViewController {
           
         }
     }
+ // helper methods to raise/lower the view above the keyboard when naming the reminder
+ 
+    @objc func keyboardWillShow(notification: NSNotification) {
+        
+        if nameTextField.isEditing {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+                saveButtonOutlet.isEnabled = false
+                saveButtonOutlet.alpha = 0.5
+                cancelButtonOutlet.isEnabled = false
+                cancelButtonOutlet.alpha = 0.5
+                print(self.view.frame.origin.y)
+            }
+        }
+        }
+    }
     
+    @objc func keyboardWillHide(notification: NSNotification) {
+       
+   
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y = 0.0
+                saveButtonOutlet.isEnabled = true
+                saveButtonOutlet.alpha = 1.0
+                cancelButtonOutlet.isEnabled = true
+                cancelButtonOutlet.alpha = 1.0
+                print(self.view.frame.origin.y)
+            
+        }
+    }
+
 
 }
 
@@ -194,6 +237,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         if annotation.title! != "My Location" {
         annotationView.animatesDrop = true
         annotationView.pinTintColor = UIColor.darkGray
+        annotationView.canShowCallout = true
         return annotationView
         }
         
@@ -201,7 +245,6 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
   
-    
     
 }
 
@@ -217,14 +260,29 @@ extension ViewController: HandleMapSearch {
         if let city = placemark.locality, let state = placemark.administrativeArea {
             annotation.subtitle = "\(city) \(state)"
         }
+        
         let center = placemark.coordinate
         let circle = MKCircle(center: center, radius: 150)
         
+        
         self.mapView.add(circle)
         mapView.addAnnotation(annotation)
+        mapView.selectAnnotation(mapView.annotations[1], animated: true)
         let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
+        print(mapView.annotations.count)
+    
         
     }
 }
+
+extension ViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       return self.view.endEditing(true)
+    }
+    
+}
+
+
