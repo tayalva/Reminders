@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 import CoreLocation
+import UserNotifications
 
 protocol HandleMapSearch {
     
@@ -40,14 +41,28 @@ class ViewController: UIViewController {
     var reminderName: String = ""
     var resultsSearchController: UISearchController? = nil
     var isEntering: Bool = true
+    let center = UNUserNotificationCenter.current()
+    let options: UNAuthorizationOptions = [.alert, .sound]
+    let content = UNMutableNotificationContent()
+    var pinCoordinates = CLLocationCoordinate2D()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
         addLocation()
+        center.requestAuthorization(options: options) { (granted, error) in
+            
+            if !granted {
+                print("Something went wrong!")
+            }
+            
+        }
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         
@@ -67,6 +82,7 @@ class ViewController: UIViewController {
       
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
 
     }
     
@@ -76,6 +92,17 @@ class ViewController: UIViewController {
         gestureRecognizer.minimumPressDuration = 0.5
         self.mapView.addGestureRecognizer(gestureRecognizer)
         fetchData()
+        
+    }
+    
+    func regionMonitoring() {
+        
+        let geofenceRegionCenter = CLLocationCoordinate2DMake(pinCoordinates.latitude, pinCoordinates.longitude)
+        let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: "Geofence")
+        
+        geofenceRegion.notifyOnEntry = true
+        geofenceRegion.notifyOnExit = true
+        locationManager.startMonitoring(for: geofenceRegion)
         
     }
     
@@ -236,11 +263,15 @@ class ViewController: UIViewController {
             annotation.title = "Remind Me"
             
             let center = coordinate
-            let circle = MKCircle(center: center, radius: 150)
+            let circle = MKCircle(center: center, radius: 50)
             
-        
+          
             self.mapView.add(circle)
             self.mapView.addAnnotation(annotation)
+            self.pinCoordinates = coordinate
+            regionMonitoring()
+
+            print(pinCoordinates)
           
         }
     }
@@ -340,7 +371,48 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         return nil
     }
     
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            print("i've exited!")
+            
+        handleEvent(forRegion: region)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            
+            print("i've entered!")
+            handleEvent(forRegion: region)
+
+        }
+    }
+    
   
+    
+    func handleEvent(forRegion region: CLRegion!) {
+        
+       let content = UNMutableNotificationContent()
+        content.title = "Test Title"
+        content.body = "test body message"
+        content.sound = UNNotificationSound.default()
+        
+        var timeInSeconds: TimeInterval = (60 * 15)
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInSeconds, repeats: false)
+        
+        let identifier = region.identifier
+        
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        center.add(request, withCompletionHandler: { (error) in
+            if error != nil {
+                
+                print("error adding notification")
+            }
+            })
+        
+    }
     
 }
 
@@ -358,7 +430,7 @@ extension ViewController: HandleMapSearch {
         }
         
         let center = placemark.coordinate
-        let circle = MKCircle(center: center, radius: 150)
+        let circle = MKCircle(center: center, radius: 50)
         
         
         self.mapView.add(circle)
@@ -367,7 +439,8 @@ extension ViewController: HandleMapSearch {
         let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
-        print(mapView.annotations.count)
+        pinCoordinates = center
+        print(pinCoordinates)
     
         
     }
@@ -380,5 +453,38 @@ extension ViewController: UITextFieldDelegate {
     }
     
 }
+
+extension ViewController: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        completionHandler(.alert)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
