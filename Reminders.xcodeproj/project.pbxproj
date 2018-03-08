@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63FA63F02051F2E9003212F3 /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA63EF2051F2E9003212F3 /* TestFile.swift */; };
 		A63B2D4A203B742E007AAD80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B2D49203B742E007AAD80 /* AppDelegate.swift */; };
 		A63B2D4C203B742E007AAD80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B2D4B203B742E007AAD80 /* ViewController.swift */; };
 		A63B2D4F203B742E007AAD80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A63B2D4D203B742E007AAD80 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63FA63EF2051F2E9003212F3 /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
 		A63B2D46203B742E007AAD80 /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A63B2D49203B742E007AAD80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A63B2D4B203B742E007AAD80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			children = (
 				A63B2D49203B742E007AAD80 /* AppDelegate.swift */,
 				A63B2D4B203B742E007AAD80 /* ViewController.swift */,
+				63FA63EF2051F2E9003212F3 /* TestFile.swift */,
 				A63B2D9620420287007AAD80 /* LocationSearchTable.swift */,
 				A63B2D4D203B742E007AAD80 /* Main.storyboard */,
 				A63B2D53203B742E007AAD80 /* Assets.xcassets */,
@@ -225,6 +228,7 @@
 				A63B2D4C203B742E007AAD80 /* ViewController.swift in Sources */,
 				A63B2D9720420287007AAD80 /* LocationSearchTable.swift in Sources */,
 				A63B2D52203B742E007AAD80 /* Reminders.xcdatamodeld in Sources */,
+				63FA63F02051F2E9003212F3 /* TestFile.swift in Sources */,
 				A63B2D4A203B742E007AAD80 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
