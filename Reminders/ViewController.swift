@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var cancelButtonOutlet: UIButton!
     @IBOutlet weak var enterExit: UISegmentedControl!
     
-    var testArray = ["Get Milk", "Drop off package"]
+    
     var annotationIsPlaced: Bool = false
     let locationManager = CLLocationManager()
     var selectedPin: MKPlacemark? = nil
@@ -47,6 +47,7 @@ class ViewController: UIViewController {
     var pinCoordinates = CLLocationCoordinate2D()
     
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,13 +57,6 @@ class ViewController: UIViewController {
         locationManager.delegate = self
         mapView.delegate = self
         addLocation()
-        center.requestAuthorization(options: options) { (granted, error) in
-            
-            if !granted {
-                print("Something went wrong!")
-            }
-            
-        }
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         
@@ -79,6 +73,7 @@ class ViewController: UIViewController {
 
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
+        UNUserNotificationCenter.current().delegate = self
       
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -375,7 +370,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         if region is CLCircularRegion {
             print("i've exited!")
             
-        handleEvent(forRegion: region)
+        handleEvent()
         }
     }
     
@@ -383,34 +378,37 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         if region is CLCircularRegion {
             
             print("i've entered!")
-            handleEvent(forRegion: region)
+            print(region)
+            /*
+            let alert = UIAlertController(title: "Arrived", message: "You've entered", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
+            */
+            handleEvent()
 
         }
     }
     
   
     
-    func handleEvent(forRegion region: CLRegion!) {
+    func handleEvent() {
         
        let content = UNMutableNotificationContent()
         content.title = "Test Title"
         content.body = "test body message"
         content.sound = UNNotificationSound.default()
         
-        var timeInSeconds: TimeInterval = (60 * 15)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInSeconds, repeats: false)
-        
-        let identifier = region.identifier
+        let identifier = "Geofence"
         
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
-        center.add(request, withCompletionHandler: { (error) in
-            if error != nil {
-                
-                print("error adding notification")
-            }
-            })
+       UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        print(request)
         
     }
     
@@ -458,7 +456,7 @@ extension ViewController: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        completionHandler(.alert)
+        completionHandler([.alert, .sound])
     }
 }
 
