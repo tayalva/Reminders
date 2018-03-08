@@ -397,8 +397,8 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func handleEvent() {
         
        let content = UNMutableNotificationContent()
-        content.title = "Test Title"
-        content.body = "test body message"
+        content.title = "Reminder"
+        content.body = "\(reminderName)"
         content.sound = UNNotificationSound.default()
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
