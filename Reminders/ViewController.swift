@@ -92,9 +92,8 @@ class ViewController: UIViewController {
     
     func regionMonitoring() {
         
-        let geofenceRegionCenter = CLLocationCoordinate2DMake(pinCoordinates.latitude, pinCoordinates.longitude)
-        let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: "Geofence")
-        
+        let geofenceRegionCenter = CLLocationCoordinate2DMake(reminders[0].locationLat, reminders[0].locationLong)
+        let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: reminders[0].name!)
         geofenceRegion.notifyOnEntry = true
         geofenceRegion.notifyOnExit = true
         locationManager.startMonitoring(for: geofenceRegion)
@@ -177,6 +176,7 @@ class ViewController: UIViewController {
         // UI effects/transitions
         
         fetchData()
+            regionMonitoring()
         print(reminderName)
         newReminderViewConstraint.constant = 400
         navigationController?.isNavigationBarHidden = true
@@ -264,7 +264,7 @@ class ViewController: UIViewController {
             self.mapView.add(circle)
             self.mapView.addAnnotation(annotation)
             self.pinCoordinates = coordinate
-            regionMonitoring()
+            //regionMonitoring()
 
             print(pinCoordinates)
           
@@ -282,7 +282,6 @@ class ViewController: UIViewController {
                 saveButtonOutlet.alpha = 0.5
                 cancelButtonOutlet.isEnabled = false
                 cancelButtonOutlet.alpha = 0.5
-                print(self.view.frame.origin.y)
             }
         }
         }
@@ -297,7 +296,8 @@ class ViewController: UIViewController {
                 saveButtonOutlet.alpha = 1.0
                 cancelButtonOutlet.isEnabled = true
                 cancelButtonOutlet.alpha = 1.0
-                print(self.view.frame.origin.y)
+                reminderName = nameTextField.text!
+
             
         }
     }
@@ -370,7 +370,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         if region is CLCircularRegion {
             print("i've exited!")
             
-        handleEvent()
+        handleEvent(forRegion: region)
         }
     }
     
@@ -379,31 +379,24 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
             
             print("i've entered!")
             print(region)
-            /*
-            let alert = UIAlertController(title: "Arrived", message: "You've entered", preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            
-            alert.addAction(action)
-            self.present(alert, animated: true, completion: nil)
-            */
-            handleEvent()
+      
+           handleEvent(forRegion: region)
 
         }
     }
     
   
     
-    func handleEvent() {
+    func handleEvent(forRegion region: CLRegion) {
         
        let content = UNMutableNotificationContent()
-        content.title = "Reminder"
-        content.body = "\(reminderName)"
+        
+        content.title = "\(reminderName)"
         content.sound = UNNotificationSound.default()
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
-        let identifier = "Geofence"
+        let identifier = region.identifier
         
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
