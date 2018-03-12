@@ -90,10 +90,10 @@ class ViewController: UIViewController {
         
     }
     
-    func regionMonitoring() {
-        
-        let geofenceRegionCenter = CLLocationCoordinate2DMake(reminders[0].locationLat, reminders[0].locationLong)
-        let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: reminders[0].name!)
+    func regionMonitoring(geofence: Reminder) {
+    
+        let geofenceRegionCenter = CLLocationCoordinate2DMake(geofence.locationLat, geofence.locationLong)
+            let geofenceRegion: CLCircularRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: geofence.identifier!)
         geofenceRegion.notifyOnEntry = true
         geofenceRegion.notifyOnExit = true
         locationManager.startMonitoring(for: geofenceRegion)
@@ -170,13 +170,15 @@ class ViewController: UIViewController {
         newReminder.name = nameTextField?.text
         newReminder.locationLat = mapView.annotations[1].coordinate.latitude
         newReminder.locationLong = mapView.annotations[1].coordinate.longitude
+        newReminder.identifier = UUID().description
         newReminder.isArriving = isEntering
         appDelegate.saveContext()
+    
         
         // UI effects/transitions
         
         fetchData()
-            regionMonitoring()
+        regionMonitoring(geofence: newReminder)
         print(reminderName)
         newReminderViewConstraint.constant = 400
         navigationController?.isNavigationBarHidden = true
@@ -390,8 +392,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func handleEvent(forRegion region: CLRegion) {
         
        let content = UNMutableNotificationContent()
-        
-        content.title = "\(reminderName)"
+        content.title = "do your thing!"
         content.sound = UNNotificationSound.default()
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -401,7 +402,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        print(request)
+        print(identifier)
         
     }
     
