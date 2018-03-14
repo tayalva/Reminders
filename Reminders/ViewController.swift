@@ -52,7 +52,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         
-        
+        print("here are the locations: \(locationManager.monitoredRegions)")
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
@@ -104,6 +104,23 @@ class ViewController: UIViewController {
         }
         locationManager.startMonitoring(for: geofenceRegion)
         
+    }
+    
+    func stopMonitoring(geofence: Reminder) {
+        
+        for region in locationManager.monitoredRegions {
+           
+            if geofence.identifier == region.identifier {
+            locationManager.stopMonitoring(for: region)
+                
+                print("geofence: \(geofence.identifier!)")
+                print("monitored region: \(region.identifier)")
+                print("monitored regions: \(locationManager.monitoredRegions)")
+              
+        }
+           //print(locationManager.monitoredRegions)
+
+        }
     }
     
 // Fetches data to populate the table view
@@ -313,6 +330,10 @@ class ViewController: UIViewController {
 
 }
 
+
+// MARK: TableView Methods
+
+
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -332,16 +353,21 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
             
-            let item = self.reminders[indexPath.row]
+            let item = self.reminders.reversed()[indexPath.row]
+             self.stopMonitoring(geofence: item)
+
             self.context.delete(item)
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
             self.reminders.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+           
         }
         
         return [delete]
     }
 }
+
+// MARK: MapView/Location Methods
 
 extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
  
@@ -376,9 +402,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-            
-     
-                
+    
              print("i've exited!")
                     
                     handleEvent(forRegion: region)
