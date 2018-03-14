@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var reminders: [Reminder] = []
+    var reversedReminders: [Reminder] = []
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var newReminderView: UIView!
@@ -52,7 +53,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         
-        print("here are the locations: \(locationManager.monitoredRegions)")
+      
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
@@ -118,7 +119,7 @@ class ViewController: UIViewController {
                 print("monitored regions: \(locationManager.monitoredRegions)")
               
         }
-           //print(locationManager.monitoredRegions)
+          
 
         }
     }
@@ -130,8 +131,10 @@ class ViewController: UIViewController {
         
         do {
             reminders = try context.fetch(Reminder.fetchRequest())
-            print(reminders)
+            reversedReminders = reminders.reversed()
             DispatchQueue.main.async {
+                
+            
                 self.tableView.reloadData()
             }
             
@@ -152,6 +155,10 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func testButton(_ sender: Any) {
+        
+        print("test: \(reversedReminders)")
+    }
     @IBAction func nameTextDidEndAction(_ sender: Any) {
         
         reminderName = nameTextField.text!
@@ -196,13 +203,12 @@ class ViewController: UIViewController {
         newReminder.identifier = UUID().description
         newReminder.isArriving = isEntering
         appDelegate.saveContext()
-    
         
         // UI effects/transitions
         
         fetchData()
         regionMonitoring(geofence: newReminder)
-        print(reminderName)
+            print(reversedReminders)
         newReminderViewConstraint.constant = 400
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
@@ -291,7 +297,7 @@ class ViewController: UIViewController {
             self.pinCoordinates = coordinate
           
 
-            print(pinCoordinates)
+    
           
         }
     }
@@ -337,7 +343,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reminders.count
+        return reversedReminders.count
     }
     
     
@@ -345,7 +351,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.text = reminders.reversed()[indexPath.row].name
+        let item = reversedReminders[indexPath.row]
+        
+        cell.textLabel?.text = item.name
         
         return cell
     }
@@ -353,14 +361,16 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
             
-            let item = self.reminders.reversed()[indexPath.row]
+        let item = self.reversedReminders[indexPath.row]
              self.stopMonitoring(geofence: item)
+            
 
             self.context.delete(item)
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
-            self.reminders.remove(at: indexPath.row)
+            self.reversedReminders.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-           
+           self.reminders = self.reversedReminders.reversed()
+         
         }
         
         return [delete]
@@ -402,8 +412,6 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-    
-             print("i've exited!")
                     
                     handleEvent(forRegion: region)
         
@@ -412,9 +420,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
-            
-            print("i've entered!")
-            print(region)
+    
            handleEvent(forRegion: region)
             
         }
@@ -426,7 +432,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         
        let content = UNMutableNotificationContent()
         
-        for item in reminders {
+        for item in reversedReminders {
             
             if item.identifier == region.identifier {
                 
@@ -442,7 +448,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-        print(identifier)
+       
                 
             }
         }
@@ -475,7 +481,7 @@ extension ViewController: HandleMapSearch {
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
         pinCoordinates = center
-        print(pinCoordinates)
+      
     
         
     }
