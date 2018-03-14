@@ -93,9 +93,15 @@ class ViewController: UIViewController {
     func regionMonitoring(geofence: Reminder) {
     
         let geofenceRegionCenter = CLLocationCoordinate2DMake(geofence.locationLat, geofence.locationLong)
-            let geofenceRegion: CLCircularRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: geofence.identifier!)
+        let geofenceRegion: CLCircularRegion = CLCircularRegion(center: geofenceRegionCenter, radius: 50, identifier: geofence.identifier!)
+        
+        if geofence.isArriving == true {
         geofenceRegion.notifyOnEntry = true
+        geofenceRegion.notifyOnExit = false
+        } else if geofence.isArriving == false {
         geofenceRegion.notifyOnExit = true
+        geofenceRegion.notifyOnEntry = false
+        }
         locationManager.startMonitoring(for: geofenceRegion)
         
     }
@@ -370,11 +376,13 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
-            print("i've exited!")
-            print(isEntering)
-            if isEntering == false {
-        handleEvent(forRegion: region)
-            }
+            
+     
+                
+             print("i've exited!")
+                    
+                    handleEvent(forRegion: region)
+        
         }
     }
     
@@ -383,9 +391,8 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
             
             print("i've entered!")
             print(region)
-            if isEntering == true {
            handleEvent(forRegion: region)
-            }
+            
         }
     }
     
