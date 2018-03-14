@@ -168,8 +168,8 @@ class ViewController: UIViewController {
         
         let newReminder = Reminder(context: context)
         newReminder.name = nameTextField?.text
-        newReminder.locationLat = mapView.annotations[1].coordinate.latitude
-        newReminder.locationLong = mapView.annotations[1].coordinate.longitude
+        newReminder.locationLat = pinCoordinates.latitude
+        newReminder.locationLong = pinCoordinates.longitude
         newReminder.identifier = UUID().description
         newReminder.isArriving = isEntering
         appDelegate.saveContext()
@@ -266,7 +266,7 @@ class ViewController: UIViewController {
             self.mapView.add(circle)
             self.mapView.addAnnotation(annotation)
             self.pinCoordinates = coordinate
-            //regionMonitoring()
+          
 
             print(pinCoordinates)
           
@@ -371,8 +371,10 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
             print("i've exited!")
-            
+            print(isEntering)
+            if isEntering == false {
         handleEvent(forRegion: region)
+            }
         }
     }
     
@@ -381,9 +383,9 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
             
             print("i've entered!")
             print(region)
-      
+            if isEntering == true {
            handleEvent(forRegion: region)
-
+            }
         }
     }
     
@@ -392,7 +394,14 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     func handleEvent(forRegion region: CLRegion) {
         
        let content = UNMutableNotificationContent()
-        content.title = "do your thing!"
+        
+        for item in reminders {
+            
+            if item.identifier == region.identifier {
+                
+                content.title = item.name!
+       
+   
         content.sound = UNNotificationSound.default()
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
@@ -403,6 +412,9 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         
        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         print(identifier)
+                
+            }
+        }
         
     }
     
