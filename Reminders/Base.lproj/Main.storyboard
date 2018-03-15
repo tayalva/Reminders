@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vla-jh-sBA">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="vla-jh-sBA">
                                 <rect key="frame" x="0.0" y="129" width="375" height="538"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.80719864370000005" green="0.827434063" blue="0.83573919529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -124,6 +124,24 @@
                                     <action selector="testButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CqV-Wr-3Wc"/>
                                 </connections>
                             </button>
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k0Q-2F-8jZ" userLabel="ReminderView">
+                                <rect key="frame" x="51" y="150" width="273" height="334"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I8Q-y7-A8F">
+                                        <rect key="frame" x="0.0" y="117" width="273" height="217"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </mapView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Reminder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30U-wf-IkR">
+                                        <rect key="frame" x="0.0" y="47" width="265" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -140,6 +158,9 @@
                         <outlet property="nameTextField" destination="jtD-aP-dZL" id="bw8-gg-wFv"/>
                         <outlet property="newReminderView" destination="ubE-YW-Xmv" id="k1T-e8-2RT"/>
                         <outlet property="newReminderViewConstraint" destination="Pk0-hB-3Ca" id="SzF-bd-mrY"/>
+                        <outlet property="reminderLabel" destination="30U-wf-IkR" id="Cke-XB-JEx"/>
+                        <outlet property="reminderMapView" destination="I8Q-y7-A8F" id="CjO-Kj-kSg"/>
+                        <outlet property="reminderView" destination="k0Q-2F-8jZ" id="rNa-nQ-8ix"/>
                         <outlet property="saveButtonOutlet" destination="Qqy-fa-raq" id="h81-NI-K94"/>
                         <outlet property="tableView" destination="vla-jh-sBA" id="hvI-Rv-r5d"/>
                     </connections>

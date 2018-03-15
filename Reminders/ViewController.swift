@@ -28,6 +28,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var newReminderView: UIView!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var reminderMapView: MKMapView!
+    @IBOutlet weak var reminderLabel: UILabel!
+    @IBOutlet weak var reminderView: UIView!
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -57,6 +60,7 @@ class ViewController: UIViewController {
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
+        reminderMapView.delegate = self
         addLocation()
         
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
@@ -276,6 +280,18 @@ class ViewController: UIViewController {
         
     }
     
+// dismisses mapview of selected reminder
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch: UITouch? = touches.first
+        tableView.isUserInteractionEnabled = true
+            UIView.animate(withDuration: 0.5, animations: {
+                 self.reminderView.alpha = 0
+                })
+            
+        
+    }
+    
     @objc func addAnnotationOnLongPress(gesture: UILongPressGestureRecognizer){
         
         if gesture.state == .ended {
@@ -375,6 +391,32 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         return [delete]
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.reminderView.alpha = 0.9
+        })
+        tableView.isUserInteractionEnabled = false
+        let item = reversedReminders[indexPath.row]
+        reminderLabel.text = item.name
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2DMake(item.locationLat, item.locationLong)
+        
+        let circle = MKCircle(center: annotation.coordinate, radius: 50)
+        
+       
+        
+        reminderMapView.addAnnotation(annotation)
+         self.reminderMapView.add(circle)
+        let span = MKCoordinateSpanMake(0.005, 0.005)
+        let region = MKCoordinateRegionMake(annotation.coordinate, span)
+        reminderMapView.setRegion(region, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        
+    
+    }
 }
 
 // MARK: MapView/Location Methods
@@ -409,6 +451,8 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         
         return nil
     }
+    
+
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
