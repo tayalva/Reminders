@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameTextField: UITextField!
     
+    @IBOutlet weak var addReminderButtonOutlet: UIButton!
     @IBOutlet weak var saveButtonOutlet: UIButton!
     @IBOutlet weak var cancelButtonOutlet: UIButton!
     @IBOutlet weak var enterExit: UISegmentedControl!
@@ -159,10 +160,7 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func testButton(_ sender: Any) {
-        
-        print("test: \(reversedReminders)")
-    }
+
     @IBAction func nameTextDidEndAction(_ sender: Any) {
         
         reminderName = nameTextField.text!
@@ -283,8 +281,10 @@ class ViewController: UIViewController {
 // dismisses mapview of selected reminder
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
+      //  let touch: UITouch? = touches.first
         tableView.isUserInteractionEnabled = true
+        addReminderButtonOutlet.isEnabled = true
+
             UIView.animate(withDuration: 0.5, animations: {
                  self.reminderView.alpha = 0
                 })
@@ -397,6 +397,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
             self.reminderView.alpha = 0.9
         })
         tableView.isUserInteractionEnabled = false
+        addReminderButtonOutlet.isEnabled = false
         let item = reversedReminders[indexPath.row]
         reminderLabel.text = item.name
         

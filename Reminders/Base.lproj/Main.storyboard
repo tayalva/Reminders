@@ -40,7 +40,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BT0-nR-tN6">
-                                <rect key="frame" x="0.0" y="64" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="108"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.39611479640007019" green="0.77833431959152222" blue="0.73469656705856323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
@@ -116,14 +116,6 @@
                                     <constraint firstAttribute="height" constant="576" id="ToP-qJ-A4B"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G4g-Kt-XJc">
-                                <rect key="frame" x="119" y="20" width="136" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Print reminder array"/>
-                                <connections>
-                                    <action selector="testButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CqV-Wr-3Wc"/>
-                                </connections>
-                            </button>
                             <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k0Q-2F-8jZ" userLabel="ReminderView">
                                 <rect key="frame" x="51" y="150" width="273" height="334"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -152,6 +144,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="hfV-Gk-Jxm"/>
                     <connections>
+                        <outlet property="addReminderButtonOutlet" destination="BT0-nR-tN6" id="HQc-vd-dmz"/>
                         <outlet property="cancelButtonOutlet" destination="4VU-ia-czt" id="J2z-wH-iQM"/>
                         <outlet property="enterExit" destination="AtR-6S-lUG" id="xdQ-EQ-IM0"/>
                         <outlet property="mapView" destination="CmA-wf-ur1" id="77f-RS-ON3"/>
