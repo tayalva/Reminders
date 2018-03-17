@@ -31,9 +31,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var reminderMapView: MKMapView!
     @IBOutlet weak var reminderLabel: UILabel!
     @IBOutlet weak var reminderView: UIView!
+
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
+    
+  
+    
+   
     @IBOutlet weak var nameTextField: UITextField!
     
+ 
     @IBOutlet weak var addReminderButtonOutlet: UIButton!
     @IBOutlet weak var saveButtonOutlet: UIButton!
     @IBOutlet weak var cancelButtonOutlet: UIButton!
@@ -56,14 +62,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
       
+       
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
         reminderMapView.delegate = self
         addLocation()
-        
+
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         
         resultsSearchController = UISearchController(searchResultsController: locationSearchTable)
@@ -83,6 +89,8 @@ class ViewController: UIViewController {
       
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        // newReminderView.frame.origin.x += 600
         
 
     }
@@ -150,11 +158,13 @@ class ViewController: UIViewController {
 
     @IBAction func addReminderButton(_ sender: Any) {
         clearContents()
-        navigationController?.isNavigationBarHidden = false
-    newReminderViewConstraint.constant = 0
+        
+   newReminderViewConstraint.constant = 0
         UIView.animate(withDuration: 0.2, animations: {
             self.newReminderView.alpha = 0.95
+            self.navigationController?.isNavigationBarHidden = false
             self.view.layoutIfNeeded()
+               // self.newReminderView.frame.origin.x -= 600
             
         })
         
@@ -211,7 +221,8 @@ class ViewController: UIViewController {
         fetchData()
         regionMonitoring(geofence: newReminder)
             print(reversedReminders)
-        newReminderViewConstraint.constant = 600
+       // newReminderViewConstraint.constant = 600
+            newReminderView.frame.origin.x += 600
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
@@ -224,11 +235,13 @@ class ViewController: UIViewController {
     
     @IBAction func cancelButton(_ sender: Any) {
         
-        newReminderViewConstraint.constant = 600
+       newReminderViewConstraint.constant = 600
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
             self.view.layoutIfNeeded()
+            //self.newReminderView.frame.origin.x += 600
+
         })
         
     }
