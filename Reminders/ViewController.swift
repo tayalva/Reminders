@@ -211,7 +211,7 @@ class ViewController: UIViewController {
         fetchData()
         regionMonitoring(geofence: newReminder)
             print(reversedReminders)
-        newReminderViewConstraint.constant = 400
+        newReminderViewConstraint.constant = 600
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
@@ -224,7 +224,7 @@ class ViewController: UIViewController {
     
     @IBAction func cancelButton(_ sender: Any) {
         
-        newReminderViewConstraint.constant = 400
+        newReminderViewConstraint.constant = 600
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
