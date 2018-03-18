@@ -412,6 +412,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.isUserInteractionEnabled = false
         addReminderButtonOutlet.isEnabled = false
         let item = reversedReminders[indexPath.row]
+        reminderMapView.removeAnnotations(reminderMapView.annotations)
+        reminderMapView.removeOverlays(reminderMapView.overlays)
         reminderLabel.text = item.name
         
         let annotation = MKPointAnnotation()
