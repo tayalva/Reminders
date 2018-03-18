@@ -33,13 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var reminderView: UIView!
 
     @IBOutlet weak var newReminderViewConstraint: NSLayoutConstraint!
-    
-  
-    
-   
     @IBOutlet weak var nameTextField: UITextField!
-    
- 
     @IBOutlet weak var addReminderButtonOutlet: UIButton!
     @IBOutlet weak var saveButtonOutlet: UIButton!
     @IBOutlet weak var cancelButtonOutlet: UIButton!
@@ -58,12 +52,11 @@ class ViewController: UIViewController {
     var pinCoordinates = CLLocationCoordinate2D()
     
     
-
+// sets up search bar, delegates, notification center, etc.
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-      
-       
+
         nameTextField.delegate = self
         locationManager.delegate = self
         mapView.delegate = self
@@ -90,12 +83,14 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        // newReminderView.frame.origin.x += 600
+     
         
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
+ 
+// sets up long press gesture recognizer to place pins
         
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotationOnLongPress(gesture:)))
         gestureRecognizer.minimumPressDuration = 0.5
@@ -103,6 +98,8 @@ class ViewController: UIViewController {
         fetchData()
         
     }
+
+// Function that enables monitoring of geofences
     
     func regionMonitoring(geofence: Reminder) {
     
@@ -119,6 +116,8 @@ class ViewController: UIViewController {
         locationManager.startMonitoring(for: geofenceRegion)
         
     }
+
+// removes geofences from monitored regions array
     
     func stopMonitoring(geofence: Reminder) {
         
@@ -126,10 +125,6 @@ class ViewController: UIViewController {
            
             if geofence.identifier == region.identifier {
             locationManager.stopMonitoring(for: region)
-                
-                print("geofence: \(geofence.identifier!)")
-                print("monitored region: \(region.identifier)")
-                print("monitored regions: \(locationManager.monitoredRegions)")
               
         }
           
@@ -156,6 +151,8 @@ class ViewController: UIViewController {
         }
     }
 
+//Add reminder button that swoops in newReminderView
+    
     @IBAction func addReminderButton(_ sender: Any) {
         clearContents()
         
@@ -170,12 +167,15 @@ class ViewController: UIViewController {
         
     }
     
-
+// IBAction that asigns the name textfield to a variable at the end of typing
+    
     @IBAction func nameTextDidEndAction(_ sender: Any) {
         
         reminderName = nameTextField.text!
         
     }
+
+// segmeneted control button that enables entering/exiting for a new reminder
     
     @IBAction func enterExitSegmentedControl(_ sender: Any) {
     
@@ -187,7 +187,8 @@ class ViewController: UIViewController {
         }
         
     }
-    
+  
+// All context saves happen in here
     @IBAction func saveButton(_ sender: Any) {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -221,8 +222,7 @@ class ViewController: UIViewController {
         fetchData()
         regionMonitoring(geofence: newReminder)
             print(reversedReminders)
-       // newReminderViewConstraint.constant = 600
-            newReminderView.frame.origin.x += 600
+        newReminderViewConstraint.constant = 600
         navigationController?.isNavigationBarHidden = true
         UIView.animate(withDuration: 0.3, animations: {
             self.newReminderView.alpha = 0.0
@@ -232,6 +232,7 @@ class ViewController: UIViewController {
         }
     }
     
+// Cancel button that also dismisses newReminderView
     
     @IBAction func cancelButton(_ sender: Any) {
         
@@ -245,7 +246,8 @@ class ViewController: UIViewController {
         })
         
     }
-    
+
+// Clears contents of newReminderView
     func clearContents() {
         
         enterExit.selectedSegmentIndex = 0
@@ -258,6 +260,8 @@ class ViewController: UIViewController {
         addLocation()
         
     }
+    
+    
     func checkAuthorizationStatus() {
         
         switch (CLLocationManager.authorizationStatus()) {
@@ -280,6 +284,7 @@ class ViewController: UIViewController {
       
         }   
     }
+// Adds the users location
     
     func addLocation() {
         
@@ -304,6 +309,9 @@ class ViewController: UIViewController {
             
         
     }
+ 
+
+// Adds an annotation on the mapView via a long press
     
     @objc func addAnnotationOnLongPress(gesture: UILongPressGestureRecognizer){
         
@@ -325,11 +333,9 @@ class ViewController: UIViewController {
             self.mapView.addAnnotation(annotation)
             self.pinCoordinates = coordinate
           
-
-    
-          
         }
     }
+    
  // helper methods to raise/lower the view above the keyboard when naming the reminder
  
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -386,6 +392,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+   
+// Deletes a row by swiping (also deletes from core data)
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { (action, indexPath) in
@@ -404,6 +412,9 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         
         return [delete]
     }
+ 
+    
+// shows a user disabled mapview to have a quick glance at existing reminders
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIView.animate(withDuration: 0.3, animations: {
@@ -439,6 +450,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
  
+    
+    
+// Delegate method that sets attributes for the geofence radius circle to be drawn on the map
+    
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
         if overlay.isKind(of: MKCircle.self) {
@@ -453,6 +469,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
         return MKOverlayRenderer(overlay: overlay)
     }
     
+// Delegate method that changes the pin style from the default red bubble
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -469,6 +486,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
 
+ // Enter/Exit geofence delegate methods
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if region is CLCircularRegion {
@@ -487,6 +505,7 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
   
+// This method triggers the local notification when the user enters/exits a given reminder
     
     func handleEvent(forRegion region: CLRegion) {
         
@@ -516,6 +535,9 @@ extension ViewController: CLLocationManagerDelegate, MKMapViewDelegate {
     }
     
 }
+
+
+//This method drops a pin if the user elects to search for a location instead of placing a pin manually
 
 extension ViewController: HandleMapSearch {
     
@@ -554,6 +576,9 @@ extension ViewController: UITextFieldDelegate {
     }
     
 }
+
+
+//allows for the local notifcaiton to be displayed while in the app itself
 
 extension ViewController: UNUserNotificationCenterDelegate {
     

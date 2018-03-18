@@ -18,6 +18,8 @@ class LocationSearchTable: UITableViewController {
     var mapView: MKMapView? = nil
     var handleMapSearchDelegate: HandleMapSearch? = nil
     
+ 
+// This method parses and formats location names/address for search queries
     
     func parseAddress(selectedItem: MKPlacemark) -> String {
         // space
@@ -36,6 +38,8 @@ class LocationSearchTable: UITableViewController {
     }
     
 }
+
+// updates search results while typing
 
 extension LocationSearchTable: UISearchResultsUpdating {
     
@@ -58,6 +62,8 @@ extension LocationSearchTable: UISearchResultsUpdating {
         
     }
 }
+
+// normal tableview delegate methods 
 
 extension LocationSearchTable {
     
